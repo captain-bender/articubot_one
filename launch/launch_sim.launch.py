@@ -14,7 +14,8 @@ def generate_launch_description():
 
     package_name='articubot_one'
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='True')
+    use_ros2_control = LaunchConfiguration('use_ros2_control', default='True')
 
     # Launch configuration variables specific to simulation
     x_pose = LaunchConfiguration('x_pose', default='0.0')
@@ -29,27 +30,28 @@ def generate_launch_description():
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','rsp.launch.py'
-                )]), launch_arguments={'use_sim_time': use_sim_time}.items()
+                )]), launch_arguments={'use_sim_time': use_sim_time, 
+                                       'use_ros2_control': use_ros2_control}.items()
     )
 
-    gzserver_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
-        ),
-        launch_arguments={'world': world}.items()
-    )
+    # gzserver_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
+    #     ),
+    #     launch_arguments={'world': world}.items()
+    # )
 
-    gzclient_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
-        )
-    )
+    # gzclient_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
+    #     )
+    # )
 
-    # Include the Gazebo launch file, provided by the ros_gz_sim package
-    # gazebo = IncludeLaunchDescription(
-    #             PythonLaunchDescriptionSource([os.path.join(
-    #                 get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-    #          )
+    # Include the Gazebo launch file, provided by the gazebo_ros package
+    gazebo = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+             )
 
     # Run the spawner node from the ros_gz_sim package. The entity name doesn't really matter if you only have a single robot.
     spawn_entity = Node(package='gazebo_ros', 
@@ -77,8 +79,9 @@ def generate_launch_description():
     # Launch them all!
     return LaunchDescription([
         rsp,
-        gzserver_cmd,
-        gzclient_cmd,
+        # gzserver_cmd,
+        # gzclient_cmd,
+        gazebo,
         spawn_entity,
         diff_drive_spawner,
         joint_broad_spawner
