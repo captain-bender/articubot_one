@@ -13,6 +13,17 @@ sudo apt install ros-humble-ros2-controllers
 sudo apt install ros-humble-gazebo-ros2-control
 ```
 
+## Frequently used commands
+How to execute the simulation
+```
+ros2 launch articubot_one launch_sim.launch.py
+```
+
+How to execute rviz2 with the saved configuartion
+```
+rviz2 -d scr/articubot_onr/config/main.rviz
+```
+
 How to display the control hardware_interfaces:
 ```
 ros2 control list_hardware_interfaces
