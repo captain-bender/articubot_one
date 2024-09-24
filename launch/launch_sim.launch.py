@@ -24,7 +24,7 @@ def generate_launch_description():
     world = os.path.join(
         get_package_share_directory('articubot_one'),
         'worlds',
-        'empty_world.world'
+        'obstacles.world'
     )
 
     rsp = IncludeLaunchDescription(
@@ -56,7 +56,8 @@ def generate_launch_description():
     # Include the Gazebo launch file, provided by the gazebo_ros package
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py'
+                    )]), launch_arguments={'world': world}.items()
              )
 
     # Run the spawner node from the ros_gz_sim package. The entity name doesn't really matter if you only have a single robot.
