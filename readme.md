@@ -14,6 +14,8 @@ sudo apt install ros-humble-gazebo-ros2-control
 ```
 
 ## Frequently used commands
+
+### Basic 
 How to execute the simulation
 ```
 ros2 launch articubot_one launch_sim.launch.py
@@ -24,6 +26,22 @@ How to execute rviz2 with the saved configuartion
 rviz2 -d scr/articubot_onr/config/main.rviz
 ```
 
+### Slam toolbox
+'''
+ros2 launch slam_toolbox online_async_launch.py slam_params_file:=src/articubot_one/config/mapper_params_online_async.yaml use_sim_time:=true
+'''
+
+### ROS navigation2
+```
+ros2 run nav2_map_server map_server --ros-args -p yaml_filename:=my_map_save.yaml -p use_sim_time:=true
+ros2 run nav2_util lifecycle_bringup map_server
+
+ros2 run nav2_amcl amcl --ros-args -p use_sim_time:=true
+ros2 run nav2_util lifecycle_bringup amcl
+```
+In rviz2 change the durability policy of the map topic to "Transient Local"
+
+### ROS 2 Control
 How to display the control hardware_interfaces:
 ```
 ros2 control list_hardware_interfaces
