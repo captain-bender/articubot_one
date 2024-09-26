@@ -38,6 +38,12 @@ ros2 run nav2_util lifecycle_bringup map_server
 
 ros2 run nav2_amcl amcl --ros-args -p use_sim_time:=true
 ros2 run nav2_util lifecycle_bringup amcl
+
+ros2 launch nav2_bringup navigation_launch.py
+
+ros2 launch nav2_bringup localization_launch.py map:=./my_map_save.yaml use_sim_time:=true
+ros2 launch nav2_bringup navigation_launch.py map_subscribe_transient_local:=true
+
 ```
 In rviz2 change the durability policy of the map topic to "Transient Local"
 
